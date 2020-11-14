@@ -1,6 +1,6 @@
 <template>
 	<md-content class="page-container" md-theme="primary">
-		<md-app md-waterfall md-mode="overlap">
+		<md-app md-mode="overlap" md-waterfall>
 			<md-app-toolbar class="md-primary md-large">
 				<div class="md-toolbar-row">
 					<md-button class="md-icon-button" @click="menuVisible = !menuVisible">
@@ -47,10 +47,24 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
 	data: () => ({
 		menuVisible: false
-	})
+	}),
+	methods: {
+		async refresh() {
+			let ret = await axios.get("http://127.0.0.1" + "/api/list");
+			await this.$store.dispatch('setList', ret.data.result);
+		}
+	},
+	created() {
+		this.refresh();
+		setInterval(() => {
+			this.refresh();
+		}, 1000 * 10);
+	}
 };
 </script>
 
@@ -66,6 +80,13 @@ export default {
 </style>
 
 <style>
+@import url('https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css');
+
+* {
+	font-family: 'NanumSquareRound', sans-serif;
+	line-height: 30px;
+}
+
 .page-container > div {
 	min-height: 100vh;
 }

@@ -1,6 +1,6 @@
 <template>
 	<div class="card-list">
-		<md-card md-with-hover class="card">
+		<md-card class="card" md-with-hover>
 			<md-card-header>
 				<div class="md-title">주문하기</div>
 			</md-card-header>
@@ -15,13 +15,13 @@
 				</router-link>
 			</md-card-actions>
 		</md-card>
-		<md-card md-with-hover class="card">
+		<md-card class="card" md-with-hover>
 			<md-card-header>
 				<div class="md-title">주문 조회</div>
 			</md-card-header>
 
 			<md-card-content>
-				<p>
+				<!--<p>
 					<router-link to="/status/111-222-333">111-222-333 | 도착함</router-link>
 				</p>
 				<p>
@@ -29,6 +29,9 @@
 				</p>
 				<p>
 					<router-link to="/status/333-444-555">333-444-555 | 대기 중</router-link>
+				</p>-->
+				<p v-for="obj in list">
+					<router-link :to="`/status/${obj.id}`">{{ obj.id.substr(0, 16) }} | 대기 중</router-link>
 				</p>
 			</md-card-content>
 		</md-card>
@@ -38,9 +41,12 @@
 <script>
 export default {
 	name: 'Home',
-	data: () => ({
-
-	})
+	data: () => ({}),
+	computed: {
+		list() {
+			return this.$store.getters.list;
+		}
+	}
 }
 </script>
 
