@@ -23,7 +23,7 @@ Vue.mixin({
 			else throw new Error("Invalid value");
 		},
 		async refresh() {
-			let ret = await axios.get("http://127.0.0.1" + "/api/list");
+			let ret = await axios.get(location.origin + "/api/list");
 			await this.$store.dispatch('setList', ret.data.result);
 
 			this.show = true;
