@@ -1,8 +1,14 @@
 <template>
 	<div>
-		<pre style="font-size: 1.5em; font-weight: bold;">{{ status_message }}</pre>
+		<div style="display: flex; justify-content: space-between;">
+			<pre style="font-size: 1.5em; font-weight: bold;">{{ getStatusMessage(this.status) }}</pre>
+			<div style="display: flex; align-items: center;">
+				<md-button v-if="status === 2" class="md-dense md-primary" @click="increaseStatus">수령하기</md-button>
+				<md-button v-if="status === 3" class="md-dense md-primary" @click="increaseStatus">문 닫기</md-button>
+			</div>
+		</div>
 		<h4>조회 ID : {{ pay_id }}</h4>
-		<md-progress-bar :md-buffer="66" :md-value="34 * status" md-mode="buffer"></md-progress-bar>
+		<md-progress-bar :md-buffer="34 * status" :md-value="Math.max(0, 34 * (status))" md-mode="buffer"></md-progress-bar>
 
 		<div style="margin-top: 50px;"></div>
 		<md-divider></md-divider>
@@ -34,21 +40,15 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
 	name: "Status",
 	computed: {
 		pay_id() {
 			return this.$route.params.id;
 		},
-		status_message() {
-			let status = this.status;
-			if (status === 0) return "배송 준비 중입니다.";
-			else if (status === 1) return "배송 중입니다.";
-			else if (status === 2) return "배송하였습니다.\n버튼을 눌러 물건을 수령하세요.";
-			else if (status === 3) return "배송하였습니다.";
-			else throw new Error("Invalid value");
-		},
-		item() {
+		pay_data() {
 			let data = this.$store.getters.list, num = -1;
 			for (let i = 0; i < data.length; i++)
 				if (data[i].id === this.pay_id) {
@@ -61,12 +61,17 @@ export default {
 				return;
 			}
 
-			return data[num].list;
+			return data[num];
+		},
+		item() {
+			return JSON.parse(this.pay_data.list);
+		},
+		status() {  //0 : 준비, 1 : 배송 중, 2 : 승인 대기, 3 : 수령 + 닫기, 4 : 닫은 상태(수령 완료)
+			return this.pay_data.status;
 		}
 	},
 	data() {
 		return {
-			status: 2, //0 : 준비, 1 : 배송, 2, 3 : 승인 대기, 4 : 끝
 			search: '',
 			searched: []
 		}
@@ -74,6 +79,14 @@ export default {
 	methods: {
 		searchOnTable(text) {
 			this.searched = this.item.filter(obj => obj.name.toLowerCase().indexOf(text.toLowerCase()) > -1 || text === '');
+		},
+		async increaseStatus() {
+			await axios.get(`http://127.0.0.1/api/update`, {
+				params: {
+					id: this.pay_id
+				}
+			});
+			await this.refresh();
 		}
 	},
 	created() {

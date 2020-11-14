@@ -21,5 +21,5 @@ export default new Vuex.Store({
 		list(state) {
 			return state.list;
 		}
-	}
+	},
 })

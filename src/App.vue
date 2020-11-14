@@ -7,7 +7,7 @@
 						<md-icon>menu</md-icon>
 					</md-button>
 
-					<span class="md-title" @click="$router.push({name: 'Home'}).catch(() => {});">자율 주행 매점</span>
+					<span class="md-title" @click="$router.push({name: 'Home'}).catch(() => {});" style="cursor: pointer;">자율 주행 매점</span>
 				</div>
 			</md-app-toolbar>
 
@@ -40,7 +40,7 @@
 			</md-app-drawer>
 
 			<md-app-content>
-				<router-view></router-view>
+				<router-view v-if="show"></router-view>
 			</md-app-content>
 		</md-app>
 	</md-content>
@@ -51,16 +51,13 @@ import axios from "axios";
 
 export default {
 	data: () => ({
-		menuVisible: false
+		menuVisible: false,
+		show: false
 	}),
 	methods: {
-		async refresh() {
-			let ret = await axios.get("http://127.0.0.1" + "/api/list");
-			await this.$store.dispatch('setList', ret.data.result);
-		}
 	},
-	created() {
-		this.refresh();
+	async created() {
+		await this.refresh();
 		setInterval(() => {
 			this.refresh();
 		}, 1000 * 10);
@@ -89,9 +86,5 @@ export default {
 
 .page-container > div {
 	min-height: 100vh;
-}
-
-.md-title {
-	cursor: pointer;
 }
 </style>

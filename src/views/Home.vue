@@ -31,7 +31,7 @@
 					<router-link to="/status/333-444-555">333-444-555 | 대기 중</router-link>
 				</p>-->
 				<p v-for="obj in list">
-					<router-link :to="`/status/${obj.id}`">{{ obj.id.substr(0, 16) }} | 대기 중</router-link>
+					<router-link :to="`/status/${obj.id}`">{{ obj.id.substr(0, 16) }} | {{  getStatusMessage(obj.status) }}</router-link>
 				</p>
 			</md-card-content>
 		</md-card>
@@ -63,6 +63,10 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
+}
+
+.md-title * {
+	cursor: pointer;
 }
 
 @media (max-width: 500px) {
