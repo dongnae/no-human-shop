@@ -41,7 +41,7 @@ export default {
 				}
 			}
 
-			let ret = (await axios.get("http://localhost/api/buy", {
+			let ret = (await axios.get(`${location.origin}/api/buy`, {
 				params: {
 					buy: JSON.stringify(array)
 				}

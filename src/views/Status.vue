@@ -81,7 +81,7 @@ export default {
 			this.searched = this.item.filter(obj => obj.name.toLowerCase().indexOf(text.toLowerCase()) > -1 || text === '');
 		},
 		async increaseStatus() {
-			await axios.get(`http://127.0.0.1/api/update`, {
+			await axios.get(`${location.origin}/api/update`, {
 				params: {
 					id: this.pay_id
 				}
