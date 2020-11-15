@@ -60,6 +60,8 @@ export default {
 			[0, 0, 0],
 			[0, 0, 0]
 		];
+
+		sum = 0;
 	}
 }
 </script>
