@@ -53,6 +53,8 @@ export default {
 		}
 	},
 	created() {
+	},
+	beforeRouteEnter(to, from, next) {
 		goodsChoice = [ // 상품 선택 갯수
 			[0, 0, 0],
 			[0, 0, 0],
@@ -62,6 +64,7 @@ export default {
 		];
 
 		sum = 0;
+		next();
 	}
 }
 </script>
