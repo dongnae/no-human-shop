@@ -35,7 +35,7 @@ export default {
 					if (!goodsChoice[i][j]) continue;
 					array.push({
 						name: goodsList[i][j],
-						price: goodsPrice[i][j],
+						price: goodsPrice[i][j] * goodsChoice[i][j],
 						cnt: goodsChoice[i][j]
 					});
 				}
